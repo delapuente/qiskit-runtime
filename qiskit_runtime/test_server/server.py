@@ -111,7 +111,9 @@ def run_job(program_call: ProgramParams):
     """Run a quantum program"""
     program_id = program_call.programId
     metadata = load_metadata(program_id)
-    kwargs = json.loads(program_call.params[0], cls=RuntimeDecoder) if program_call.params else {}
+    kwargs = dict()
+    for i in range(len(program_call.params)):
+        kwargs.update(json.loads(program_call.params[i], cls=RuntimeDecoder))
     job = Job.create(
         launch,
         args=(program_id, _DEFAULT_SIMULATOR, kwargs),
